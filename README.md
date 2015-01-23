@@ -1,11 +1,7 @@
 # SensorTex
-Learning:
+Learning: python learn.py -d path_to_folders_with_images
 
-python learn.py -d path_to_folders_with_images
-
-Classifying:
-
-python classify.py -c path_to_folders_with_images/codebook.file -m path_to_folders_with_images/trainingdata.svm.model images_you_want_to_classify
+Classifying: python classify.py -c path_to_folders_with_images/codebook.file -m path_to_folders_with_images/trainingdata.svm.model images_you_want_to_classify
 
 Example run for classifying:
 
