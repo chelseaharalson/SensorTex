@@ -34,3 +34,8 @@ unzip siftDemoV4.zip
 cp sift*/sift sift
 
 If you get an IOError: SIFT executable not found error, try sudo apt-get install libc6-i386
+
+# Install Python Imaging Library
+sudo apt-get install python-imaging
+
+sudo apt-get install imagemagick
