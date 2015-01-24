@@ -9,8 +9,6 @@ import os
 import glob
 import re
 
-from mosaic import splitImage
-
 HISTOGRAMS_FILE = 'testdata.svm'
 CODEBOOK_FILE = 'codebook.file'
 MODEL_FILE = 'trainingdata.svm.model'
@@ -55,89 +53,77 @@ def parse_arguments():
     return args
 
 
-splitImage(parse_arguments())
+def classify(imgfname, args):
+	print "---------------------"
+	print "## extract Sift features"
+	all_files = []
+	all_files_labels = {}
+	all_features = {}
 
-'''
-print "---------------------"
-print "## extract Sift features"
-all_files = []
-all_files_labels = {}
-all_features = {}
+	args = parse_arguments()
+	model_file = args.m
+	codebook_file = args.c
+	fnames = args.input_images	# list of img file names
+	fnames[0] = imgfname		# still working on this, getting strange errors
+	all_features = extractSift(fnames)
+	for i in fnames:
+	    all_files_labels[i] = 0  # label is unknown
 
-args = parse_arguments()
-model_file = args.m
-codebook_file = args.c
-fnames = args.input_images
-all_features = extractSift(fnames)
-for i in fnames:
-    all_files_labels[i] = 0  # label is unknown
+	print "---------------------"
+	print "## loading codebook from " + codebook_file
+	with open(codebook_file, 'rb') as f:
+   		codebook = load(f)
+	print "---------------------"
+	print "## test data with svm"
+	print libsvm.test(HISTOGRAMS_FILE, model_file)
 
-print "---------------------"
-print "## loading codebook from " + codebook_file
-with open(codebook_file, 'rb') as f:
-    codebook = load(f)
 
-print "---------------------"
-print "## computing visual word histograms"
-all_word_histgrams = {}
-for imagefname in all_features:
-    word_histgram = computeHistograms(codebook, all_features[imagefname])
-    all_word_histgrams[imagefname] = word_histgram
+	result = str(libsvm.test(HISTOGRAMS_FILE, model_file))
+	if result == "[0]":
+		mID = 0
+		resultText = "Not recognized"
+		print("Not recognized")
+	if result == "[1]":
+		mID = 40
+		resultText = "Brick"
+		print("Brick")
+	if result == "[2]":
+		mID = 120
+		resultText = "Metal"
+		print("Metal")
+	if result == "[3]":
+		mID = 200
+		resultText = "Wood"
+		print("Wood")
 
-print "---------------------"
-print "## write the histograms to file to pass it to the svm"
-nclusters = codebook.shape[0]
-writeHistogramsToFile(nclusters,
-	              all_files_labels,
-	              fnames,
-	              all_word_histgrams,
-	              HISTOGRAMS_FILE)
+	'''
+	im = Image.open(sys.argv[5])
+	font = ImageFont.truetype("TrebuchetMSBold.ttf", 25)
 
-print "---------------------"
-print "## test data with svm"
-print libsvm.test(HISTOGRAMS_FILE, model_file)
+	text_col = (0, 255, 0) # bright green
+	halo_col = (0, 0, 0)   # black
+	i2 = draw_text_with_halo(im, (5, 5), resultText, font, text_col, halo_col)
+	i2.show()
 
-result = str(libsvm.test(HISTOGRAMS_FILE, model_file))
-if result == "[0]":
-	mID = 0
-	resultText = "Not recognized"
-	print("Not recognized")
-if result == "[1]":
-	mID = 40
-	resultText = "Brick"
-	print("Brick")
-if result == "[2]":
-	mID = 120
-	resultText = "Metal"
-	print("Metal")
-if result == "[3]":
-	mID = 200
-	resultText = "Wood"
-	print("Wood")
+	fname1 = ""
+	fname2 = "_mci"
 
-im = Image.open(sys.argv[5])
-font = ImageFont.truetype("TrebuchetMSBold.ttf", 25)
+	filename1 = newFilename(fname1)
+	filename2 = newFilename(fname2)
 
-text_col = (0, 255, 0) # bright green
-halo_col = (0, 0, 0)   # black
-i2 = draw_text_with_halo(im, (5, 5), resultText, font, text_col, halo_col)
-i2.show()
+	i2.save(filename1)
 
-fname1 = ""
-fname2 = "_mci"
+	pixels = i2.load() # create the pixel map
 
-filename1 = newFilename(fname1)
-filename2 = newFilename(fname2)
+	# generate mci map
+	for i in range(i2.size[0]):    # for every pixel:
+	    for j in range(i2.size[1]):
+		pixels[i,j] = (mID, mID, mID, 255) # set the colour accordingly
 
-i2.save(filename1)
+	i2.show()
+	i2.save(filename2)
+	'''
 
-pixels = i2.load() # create the pixel map
+	return mID
 
-for i in range(i2.size[0]):    # for every pixel:
-    for j in range(i2.size[1]):
-	pixels[i,j] = (mID, mID, mID, 255) # set the colour accordingly
-
-i2.show()
-i2.save(filename2)
-'''
-
+#classify()
