@@ -25,9 +25,11 @@ def splitImage(args):
 
 	subWindowSize = 32, 32
 	halfWindowSize = (subWindowSize[0]/2, subWindowSize[1]/2)
-	cover = 4
 	stepSize = (subWindowSize[0]/8, subWindowSize[1]/8)
-	mciPixels = np.empty((cover, cover, xsize, ysize))
+	xcover = xsize-halfWindowSize[0] #(xsize-halfWindowSize[0]-halfWindowSize[0]) / stepSize[0]
+	ycover = ysize-halfWindowSize[1] #(ysize-halfWindowSize[1]-halfWindowSize[1]) / stepSize[0]
+	mciPixels = np.empty((xcover, ycover, xsize, ysize))
+	#mciPixels = np.empty((xsize, ysize, subWindowSize[0]))
 
 	# iterate through subwindows
 	for xcenter in range(halfWindowSize[0], xsize-halfWindowSize[0], stepSize[0]):
@@ -40,16 +42,20 @@ def splitImage(args):
 			#print "Subwindow file name: " + subwindowfname
 			#print "---------------------"
 			tempMID = classify(subwindowfname, args)
-			
-			print str(tempMID)
+			#print str(tempMID)
 
-			#mciPixels[xcenter, ycenter, (xcenter-halfWindowSize[0]) - (xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]) - (ycenter+halfWindowSize[1])] = tempMCI
-
+			mciPixels[xcenter,ycenter, (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
+			#mciPixels[xcenter, ycenter, subWindowSize[0]] = tempMID
+			#print ','.join(mciPixels)
 	#for x in range(1, xsize):
 		#for y in range(1, ysize):
-			#mci[x,y] = mode(mciPixels, axis=0)
-	#tempMID = classify("subwindows/subwindow_16_16.png", args)
-	#print str(tempMID)
+			#mci[x,y] = mode(mciPixels, axis=0
+
+	print"---------------------"
+	x = np.arange(200).reshape((mciPixels))
+	with file('arrayOutput.txt', 'w') as outfile:
+		for slice_2d in x:
+			np.savetxt(outfile, slide_2d)
 
 def subImage(box, im):
 	region = im.crop(box)

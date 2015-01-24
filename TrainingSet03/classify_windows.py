@@ -54,8 +54,8 @@ def parse_arguments():
 
 
 def classify(imgfname, args):
-	print "---------------------"
-	print "## extract Sift features"
+	#print "---------------------"
+	#print "## extract Sift features"
 	all_files = []
 	all_files_labels = {}
 	all_features = {}
@@ -69,13 +69,13 @@ def classify(imgfname, args):
 	for i in fnames:
 	    all_files_labels[i] = 0  # label is unknown
 
-	print "---------------------"
-	print "## loading codebook from " + codebook_file
+	#print "---------------------"
+	#print "## loading codebook from " + codebook_file
 	with open(codebook_file, 'rb') as f:
    		codebook = load(f)
-	print "---------------------"
-	print "## test data with svm"
-	print libsvm.test(HISTOGRAMS_FILE, model_file)
+	#print "---------------------"
+	#print "## test data with svm"
+	#print libsvm.test(HISTOGRAMS_FILE, model_file)
 
 
 	result = str(libsvm.test(HISTOGRAMS_FILE, model_file))
