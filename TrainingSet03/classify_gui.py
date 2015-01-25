@@ -9,7 +9,7 @@ import os
 import glob
 import re
 
-from mosaic import splitImage
+from split_img import splitImage
 
 HISTOGRAMS_FILE = 'testdata.svm'
 CODEBOOK_FILE = 'codebook.file'
