@@ -72,7 +72,7 @@ def splitImage(args):
 					maxID = k
 					maxVote = hist[k]
 
-			mci[x][y] = maxID
+			mci[x][y] = maxID * 40
 			maxProb[x][y] = maxVote/total
 			
 
