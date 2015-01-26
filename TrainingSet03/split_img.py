@@ -63,14 +63,17 @@ def splitImage(args):
 						continue
 					total = total + 1
 					hist[maxVote/40] = hist[maxVote/40] + 1
+
 			maxID = 0
 			maxVote = hist[0]
+
 			for k in range (1, maxMaterials):
 				if(hist[k] > maxVote/40):
 					maxID = k
 					maxVote = hist[k]
-				mci[x][y] = maxID
-				maxProb[x][y] = maxVote/total
+
+			mci[x][y] = maxID
+			maxProb[x][y] = maxVote/total
 
 def subImage(box, im):
 	region = im.crop(box)
