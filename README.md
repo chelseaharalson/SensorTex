@@ -40,7 +40,7 @@ If you get an `IOError: SIFT executable not found` error, try `sudo apt-get inst
 
 To install the necessary libraries run following code from working directory:
 
-    # Numpy, Scipy, and Matplotlib
+    # Numpy, Scipy, and Matplotlib:
     sudo apt-get install python-numpy python-scipy python-matplotlib
     
     # Python Imaging Library:
