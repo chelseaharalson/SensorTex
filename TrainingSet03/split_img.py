@@ -28,6 +28,7 @@ def splitImage(args):
 	ycover = ysize-halfWindowSize[1]
 	mciPixels = np.empty((overlapWindows[0], overlapWindows[1], xsize, ysize))
 	mciMode = []
+	mci = []
 
 	# iterate through subwindows
 	for xcenter in range(halfWindowSize[0], xsize-halfWindowSize[0], stepSize[0]):
@@ -44,6 +45,14 @@ def splitImage(args):
 			x = xcenter/stepSize[0]
 			y = ycenter/stepSize[1]
 			mciPixels[x % overlapWindows[0], y % overlapWindows[1], (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
+
+	# find mode
+	print "Finding mode"
+	print "---------------------"
+	for x in range(1, xsize):
+		for y in range(1, ysize):
+			mci[x][y] = mode(mciPixels[x][y], axis=0)
+
 	'''
 	print "Finding mode"
 	print "---------------------"
@@ -51,8 +60,8 @@ def splitImage(args):
 		print row
 		findMode = mode(row, axis=0)
 		mciMode.append(findMode[0])
+	
 	'''
-
 	'''
 	data = np.arange(200).reshape((mciPixels))
 	with file('arrayOutput.txt', 'w') as outfile:
