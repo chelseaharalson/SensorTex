@@ -55,11 +55,11 @@ def classify(imgfname, args):
 		resultText = "Brick"
 		print("Brick")
 	if result == "[2]":
-		mID = 120
+		mID = 80
 		resultText = "Metal"
 		print("Metal")
 	if result == "[3]":
-		mID = 200
+		mID = 120
 		resultText = "Wood"
 		print("Wood")
 	return mID

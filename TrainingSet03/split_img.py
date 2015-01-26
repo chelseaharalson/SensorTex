@@ -27,8 +27,13 @@ def splitImage(args):
 	xcover = xsize-halfWindowSize[0]
 	ycover = ysize-halfWindowSize[1]
 	mciPixels = np.empty((overlapWindows[0], overlapWindows[1], xsize, ysize))
-	mciMode = []
-	mci = []
+	mciPixels[:,:,:,:] = -1
+	maxVote = 0
+	hist = np.zeros(4)
+	total = 0
+	maxMaterials = 4
+	mci = np.zeros((2,2))
+	maxProb = np.zeros((2,2))
 
 	# iterate through subwindows
 	for xcenter in range(halfWindowSize[0], xsize-halfWindowSize[0], stepSize[0]):
@@ -51,30 +56,21 @@ def splitImage(args):
 	print "---------------------"
 	for x in range(1, xsize):
 		for y in range(1, ysize):
-			mci[x][y] = mode(mciPixels[x][y], axis=0)
-
-	'''
-	print "Finding mode"
-	print "---------------------"
-	for row in mciPixels:
-		print row
-		findMode = mode(row, axis=0)
-		mciMode.append(findMode[0])
-	
-	'''
-	'''
-	data = np.arange(200).reshape((mciPixels))
-	with file('arrayOutput.txt', 'w') as outfile:
-		for data_slice in data:
-			np.savetxt(outfile, data_slice, fmt='%-7.2f')
-			outfile.write('# New slice\n')
-	'''
-	'''
-	for x in range(1, xsize):
-		for y in range(1, ysize):
-			mci[x,y] = mode(mciPixels, axis=0)
-			print(mci[x,y])
-	'''
+			for i in range(1, overlapWindows[0]):
+				for j in range(1, overlapWindows[1]):
+					maxVote = mciPixels[i][j][x][y]
+					if(maxVote == -1):		# not classified
+						continue
+					total = total + 1
+					hist[maxVote/40] = hist[maxVote/40] + 1
+			maxID = 0
+			maxVote = hist[0]
+			for k in range (1, maxMaterials):
+				if(hist[k] > maxVote/40):
+					maxID = k
+					maxVote = hist[k]
+				mci[x][y] = maxID
+				maxProb[x][y] = maxVote/total
 
 def subImage(box, im):
 	region = im.crop(box)
