@@ -4,6 +4,9 @@ from scipy.stats import mode
 
 from classify_subwindows import classify
 
+mci = []
+maxProb = []
+
 def parse_arguments():
     parser = argparse.ArgumentParser(description='classify images with a visual bag of words model')
     parser.add_argument('-c', help='path to the codebook file', required=False, default=CODEBOOK_FILE)
@@ -33,7 +36,9 @@ def splitImage(args):
 	total = 0
 	maxMaterials = 4
 	mci = np.empty((xsize, ysize))
+	mci[:,:] = 0
 	maxProb = np.empty((xsize, ysize))
+	maxProb[:,:] = 0
 
 	# iterate through subwindows
 	for xcenter in range(halfWindowSize[0], xsize-halfWindowSize[0], stepSize[0]):
@@ -74,8 +79,19 @@ def splitImage(args):
 
 			mci[x][y] = maxID * 40
 			maxProb[x][y] = maxVote/total
+	generateMCI(mci)
 			
 
 def subImage(box, im):
 	region = im.crop(box)
 	return region
+
+def generateMCI(mciMap):
+	newImage = Image.new('RGB', (mciMap.shape), "black")
+	pixels = newImage.load() # create the pixel map
+	for i in range(newImage.size[0]):    # for every pixel:
+	    for j in range(newImage.size[1]):
+		#print(mciMap[i,j])
+		pixels[i,j] = (int(mciMap[i,j]), int(mciMap[i,j]), int(mciMap[i,j]), 255) # set the color accordingly
+	newImage.show()
+	return pixels
