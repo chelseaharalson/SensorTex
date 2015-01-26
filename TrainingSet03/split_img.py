@@ -19,13 +19,14 @@ def splitImage(args):
 	# get test image
 	im = Image.open(args.input_images[0])
 	xsize, ysize = im.size
-
+	
 	subWindowSize = 32, 32
+	overlapWindows = 4, 4
 	halfWindowSize = (subWindowSize[0]/2, subWindowSize[1]/2)
-	stepSize = (subWindowSize[0]/8, subWindowSize[1]/8)
+	stepSize = (subWindowSize[0]/overlapWindows[0], subWindowSize[1]/overlapWindows[1])
 	xcover = xsize-halfWindowSize[0]
 	ycover = ysize-halfWindowSize[1]
-	mciPixels = np.empty((xcover, ycover, xsize, ysize))
+	mciPixels = np.empty((overlapWindows[0], overlapWindows[1], xsize, ysize))
 	mciMode = []
 
 	# iterate through subwindows
@@ -36,19 +37,21 @@ def splitImage(args):
 			#subwindow.show()
 			subwindowfname = "subwindows/subwindow_" + str(xcenter) + "_" + str(ycenter) + ".png"
 			subwindow.save(subwindowfname)
-			#print "Subwindow file name: " + subwindowfname
-			#print "---------------------"
+			print "Subwindow file name: " + subwindowfname
+			print "---------------------"
 			tempMID = classify(subwindowfname, args)
-			#print str(tempMID)
-			mciPixels[xcenter, ycenter, (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
-	
+			print str(tempMID)
+			x = xcenter/stepSize[0]
+			y = ycenter/stepSize[1]
+			mciPixels[x % overlapWindows[0], y % overlapWindows[1], (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
+	'''
 	print "Finding mode"
 	print "---------------------"
 	for row in mciPixels:
+		print row
 		findMode = mode(row, axis=0)
 		mciMode.append(findMode[0])
-	print(mciMode)
-
+	'''
 
 	'''
 	data = np.arange(200).reshape((mciPixels))
