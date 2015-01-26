@@ -10,34 +10,30 @@ python classify_gui.py -c Training01codebook.file -m Training01trainingdata.svm.
 python classify_gui.py -c Training02codebook.file -m Training02trainingdata.svm.model Test_Training02/p4.png
 
 
-#PRE-REQS:
-# installing libsvm
-wget -O libsvm.tar.gz http://www.csie.ntu.edu.tw/~cjlin/cgi-bin/libsvm.cgi?+http://www.csie.ntu.edu.tw/~cjlin/libsvm+tar.gz
+### Prerequisites:
 
-tar -xzf libsvm.tar.gz
+To install the necessary libraries run following code from working directory:
 
-mkdir libsvm
+    # installing libsvm
+    wget -O libsvm.tar.gz http://www.csie.ntu.edu.tw/~cjlin/cgi-bin/libsvm.cgi?+http://www.csie.ntu.edu.tw/~cjlin/libsvm+tar.gz
+    tar -xzf libsvm.tar.gz
+    mkdir libsvm
+    cp -r libsvm-*/* libsvm/
+    rm -r libsvm-*/
+    cd libsvm
+    make
+    cp tools/grid.py ../grid.py
+    cd ..
+    
+    # installing sift
+    wget http://www.cs.ubc.ca/~lowe/keypoints/siftDemoV4.zip
+    unzip siftDemoV4.zip
+    cp sift*/sift sift
+    
 
-cp -r libsvm-*/* libsvm/
-
-rm -r libsvm-*/
-
-cd libsvm
-
-make
-
-cp tools/grid.py ../grid.py
-
-cd ..
-
-# installing sift
-wget http://www.cs.ubc.ca/~lowe/keypoints/siftDemoV4.zip
-
-unzip siftDemoV4.zip
-
-cp sift*/sift sift
-
-If you get an IOError: SIFT executable not found error, try sudo apt-get install libc6-i386
+#### Notes
+If you get an `IOError: SIFT executable not found` error, try `sudo apt-get install libc6-i386`. `sift` is a 32Bit executable and you need to install additional libraries to make it run on 64Bit systems. [More info and background on the misleading error message on unix.stackexchange](http://unix.stackexchange.com/a/13409/11381)
+    
 
 # Install Python Imaging Library
 sudo apt-get install python-imaging
