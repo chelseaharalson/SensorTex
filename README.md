@@ -6,11 +6,10 @@
 ### Classifying:
     python classify.py -c path_to_folders_with_images/codebook.file -m path_to_folders_with_images/trainingdata.svm.model images_you_want_to_classify
 
-Example run for classifying:
-
-python classify_gui.py -c Training01codebook.file -m Training01trainingdata.svm.model Test_Training01/p3.png
-
-python classify_gui.py -c Training02codebook.file -m Training02trainingdata.svm.model Test_Training02/p4.png
+### Example run for classifying:
+    python classify_gui.py -c Training01codebook.file -m Training01trainingdata.svm.model Test_Training01/p3.png
+    python classify_gui.py -c Training02codebook.file -m Training02trainingdata.svm.model Test_Training02/p4.png
+    python classify_gui.py -c Training03codebook.file -m Training03trainingdata.svm.model MoreTest/test015.bmp
 
 
 ### Prerequisites:
