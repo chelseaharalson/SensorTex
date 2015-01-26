@@ -32,8 +32,8 @@ def splitImage(args):
 	hist = np.zeros(4)
 	total = 0
 	maxMaterials = 4
-	mci = np.zeros((2,2))
-	maxProb = np.zeros((2,2))
+	mci = np.empty((xsize, ysize))
+	maxProb = np.empty((xsize, ysize))
 
 	# iterate through subwindows
 	for xcenter in range(halfWindowSize[0], xsize-halfWindowSize[0], stepSize[0]):
@@ -52,7 +52,7 @@ def splitImage(args):
 			mciPixels[x % overlapWindows[0], y % overlapWindows[1], (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
 
 	# find mode
-	print "Finding mode"
+	print "Determining max vote"
 	print "---------------------"
 	for x in range(1, xsize):
 		for y in range(1, ysize):
@@ -74,6 +74,7 @@ def splitImage(args):
 
 			mci[x][y] = maxID
 			maxProb[x][y] = maxVote/total
+			
 
 def subImage(box, im):
 	region = im.crop(box)
