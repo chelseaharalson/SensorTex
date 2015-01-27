@@ -1,8 +1,9 @@
 from PIL import Image
+import sys
 import numpy as np
 from scipy.stats import mode
-
 from classify_subwindows import classify
+from classify_single import newFilename
 
 mci = []
 maxProb = []
@@ -79,6 +80,9 @@ def splitImage(args):
 
 			mci[x][y] = maxID * 40
 			maxProb[x][y] = maximalVote/total
+	im = Image.open(sys.argv[5])
+	im.show()
+	#print(mci)
 	generateMCI(mci)
 			
 
@@ -94,4 +98,7 @@ def generateMCI(mciMap):
 		#print(mciMap[i,j])
 		pixels[i,j] = (int(mciMap[i,j]), int(mciMap[i,j]), int(mciMap[i,j]), 255) # set the color accordingly
 	newImage.show()
+	fname = "_mci"
+	filename = newFilename(fname)
+	newImage.save(filename)
 	return pixels
