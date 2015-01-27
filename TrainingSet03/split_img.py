@@ -23,7 +23,7 @@ def splitImage(args):
 	im = Image.open(args.input_images[0])
 	xsize, ysize = im.size
 	
-	subWindowSize = 32, 32
+	subWindowSize = 64, 64
 	overlapWindows = 4, 4
 	halfWindowSize = (subWindowSize[0]/2, subWindowSize[1]/2)
 	stepSize = (subWindowSize[0]/overlapWindows[0], subWindowSize[1]/overlapWindows[1])
@@ -31,7 +31,7 @@ def splitImage(args):
 	ycover = ysize-halfWindowSize[1]
 	mciPixels = np.empty((overlapWindows[0], overlapWindows[1], xsize, ysize))
 	mciPixels[:,:,:,:] = -1
-	maxVote = 0
+	maximalVote = 0
 	hist = np.zeros(4)
 	total = 0
 	maxMaterials = 4
@@ -57,28 +57,28 @@ def splitImage(args):
 			mciPixels[x % overlapWindows[0], y % overlapWindows[1], (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
 
 	# find mode
-	print "Determining max vote"
+	print "Determining maximal vote"
 	print "---------------------"
 	for x in range(1, xsize):
 		for y in range(1, ysize):
 			for i in range(1, overlapWindows[0]):
 				for j in range(1, overlapWindows[1]):
-					maxVote = mciPixels[i][j][x][y]
-					if(maxVote == -1):		# not classified
+					maximalVote = mciPixels[i][j][x][y]
+					if(maximalVote == -1):		# not classified
 						continue
 					total = total + 1
-					hist[maxVote/40] = hist[maxVote/40] + 1
+					hist[maximalVote/40] = hist[maximalVote/40] + 1
 
 			maxID = 0
-			maxVote = hist[0]
+			maximalVote = hist[0]
 
 			for k in range (1, maxMaterials):
-				if(hist[k] > maxVote/40):
+				if(hist[k] > maximalVote):
 					maxID = k
-					maxVote = hist[k]
+					maximalVote = hist[k]
 
 			mci[x][y] = maxID * 40
-			maxProb[x][y] = maxVote/total
+			maxProb[x][y] = maximalVote/total
 	generateMCI(mci)
 			
 
