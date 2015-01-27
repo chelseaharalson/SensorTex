@@ -30,16 +30,16 @@ def natural_sort_key(key):
     return [int(t) if t.isdigit() else t for t in re.split(r'(\d+)', key)]
 
 def newFilename(fname):
-	filename = "test_result" + fname + ".png" #default file name
+	filename = "results/test_result" + fname + ".png" #default file name
 	#if it does find the last count
 	if(os.path.exists(filename)):
-		result_file = sorted_nicely( glob.glob("./test_result" + fname + "[0-9]*.png"))
+		result_file = sorted_nicely( glob.glob("results/test_result" + fname + "[0-9]*.png"))
 		if(len(result_file)==0):
-		        filename="test_result" + fname + "1.png"
+		        filename="results/test_result" + fname + "1.png"
 		else:
 		        last_result = result_file[-1]
-		        number = re.search( "test_result" + fname + "([0-9]*).png",last_result).group(1)
-		        filename="test_result" + fname + "%i.png"%+(int(number)+1)
+		        number = re.search( "results/test_result" + fname + "([0-9]*).png",last_result).group(1)
+		        filename="results/test_result" + fname + "%i.png"%+(int(number)+1)
 	return filename
 
 

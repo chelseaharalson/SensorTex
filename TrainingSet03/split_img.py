@@ -8,14 +8,6 @@ from classify_single import newFilename
 mci = []
 maxProb = []
 
-def parse_arguments():
-    parser = argparse.ArgumentParser(description='classify images with a visual bag of words model')
-    parser.add_argument('-c', help='path to the codebook file', required=False, default=CODEBOOK_FILE)
-    parser.add_argument('-m', help='path to the model  file', required=False, default=MODEL_FILE)
-    parser.add_argument('input_images', help='images to classify', nargs='+')
-    args = parser.parse_args()
-    return args
-
 def splitImage(args):
 	print "---------------------"
 	print "Spliting up the image..."
@@ -98,7 +90,7 @@ def generateMCI(mciMap):
 		#print(mciMap[i,j])
 		pixels[i,j] = (int(mciMap[i,j]), int(mciMap[i,j]), int(mciMap[i,j]), 255) # set the color accordingly
 	newImage.show()
-	fname = "_mci"
+	fname = "_mosaic_mci"
 	filename = newFilename(fname)
 	newImage.save(filename)
 	return pixels
