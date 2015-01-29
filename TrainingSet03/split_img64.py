@@ -1,5 +1,7 @@
 from PIL import Image
 import sys
+import os
+import glob
 import numpy as np
 from scipy.stats import mode
 from classify_subwindows import classify
@@ -35,6 +37,11 @@ def splitImage(args):
 	tempArray = np.zeros((ysize/stepSize[1]-4,xsize/stepSize[0]-4))
 	print str(ysize/stepSize[1]-2)
 	print str(xsize/stepSize[0]-2)
+
+	# clear out subwindows folder
+	files = glob.glob('subwindows/*')
+	for f in files:
+		os.remove(f)
 
 	# iterate through subwindows
 	for xcenter in range(halfWindowSize[0], xsize-halfWindowSize[0], stepSize[0]):
