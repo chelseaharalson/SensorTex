@@ -100,7 +100,6 @@ def generateMCI(mciMap):
 	pixels = newImage.load() # create the pixel map
 	for i in range(newImage.size[0]):    # for every pixel:
 	    for j in range(newImage.size[1]):
-		#print(mciMap[i,j])
 		pixels[i,j] = (int(mciMap[i,j]), int(mciMap[i,j]), int(mciMap[i,j]), 255) # set the color accordingly
 	newImage.show()
 

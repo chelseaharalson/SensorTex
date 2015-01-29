@@ -101,7 +101,7 @@ def classifySingle(args):
 
 	for i in range(i2.size[0]):    # for every pixel:
 	    for j in range(i2.size[1]):
-		pixels[i,j] = (mID, mID, mID, 255) # set the colour accordingly
+		pixels[i,j] = (mID, mID, mID, 255) # set the color accordingly
 
 	i2.show()
 	i2.save(fname1, "png")

@@ -33,7 +33,7 @@ def splitImage(args):
 	mci[:,:] = 0
 	maxProb = np.empty((xsize, ysize))
 	maxProb[:,:] = 0
-	tempArray = np.zeros((ysize/stepSize[1]-4,xsize/stepSize[0]-4))
+	tempArray = np.zeros((ysize/stepSize[1],xsize/stepSize[0]))
 	print str(ysize/stepSize[1]-2)
 	print str(xsize/stepSize[0]-2)
 
@@ -100,7 +100,6 @@ def generateMCI(mciMap):
 	pixels = newImage.load() # create the pixel map
 	for i in range(newImage.size[0]):    # for every pixel:
 	    for j in range(newImage.size[1]):
-		#print(mciMap[i,j])
 		pixels[i,j] = (int(mciMap[i,j]), int(mciMap[i,j]), int(mciMap[i,j]), 255) # set the color accordingly
 	newImage.show()
 
