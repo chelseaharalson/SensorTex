@@ -22,8 +22,8 @@ def parse_arguments():
     return args
 
 def classify(imgfname, args):
-	print "---------------------"
-	print "## extract Sift features"
+	#print "---------------------"
+	#print "## extract Sift features"
 	all_files = []
 	all_files_labels = {}
 	all_features = {}
@@ -37,20 +37,20 @@ def classify(imgfname, args):
 	for i in fnames:
 	    all_files_labels[i] = 0  # label is unknown
 
-	print "---------------------"
-	print "## loading codebook from " + codebook_file
+	#print "---------------------"
+	#print "## loading codebook from " + codebook_file
 	with open(codebook_file, 'rb') as f:
 	    codebook = load(f)
 
-	print "---------------------"
-	print "## computing visual word histograms"
+	#print "---------------------"
+	#print "## computing visual word histograms"
 	all_word_histgrams = {}
 	for imagefname in all_features:
 	    word_histgram = computeHistograms(codebook, all_features[imagefname])
 	    all_word_histgrams[imagefname] = word_histgram
 
-	print "---------------------"
-	print "## write the histograms to file to pass it to the svm"
+	#print "---------------------"
+	#print "## write the histograms to file to pass it to the svm"
 	nclusters = codebook.shape[0]
 	writeHistogramsToFile(nclusters,
 		              all_files_labels,
@@ -58,25 +58,25 @@ def classify(imgfname, args):
 		              all_word_histgrams,
 		              HISTOGRAMS_FILE)
 
-	print "---------------------"
-	print "## test data with svm"
-	print libsvm.test(HISTOGRAMS_FILE, model_file)
+	#print "---------------------"
+	#print "## test data with svm"
+	#print libsvm.test(HISTOGRAMS_FILE, model_file)
 
 	result = str(libsvm.test(HISTOGRAMS_FILE, model_file))
 	if result == "[0]":
 		mID = 0
 		resultText = "Not recognized"
-		print("Not recognized")
+		#print("Not recognized")
 	if result == "[1]":
 		mID = 40
 		resultText = "Brick"
-		print("Brick")
+		#print("Brick")
 	if result == "[2]":
 		mID = 80
 		resultText = "Metal"
-		print("Metal")
+		#print("Metal")
 	if result == "[3]":
 		mID = 120
 		resultText = "Wood"
-		print("Wood")
+		#print("Wood")
 	return mID

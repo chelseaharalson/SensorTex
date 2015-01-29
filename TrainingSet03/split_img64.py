@@ -16,7 +16,7 @@ def splitImage(args):
 	im = Image.open(args.input_images[0])
 	xsize, ysize = im.size
 	
-	subWindowSize = 128, 128
+	subWindowSize = 64, 64
 	overlapWindows = 4, 4
 	halfWindowSize = (subWindowSize[0]/2, subWindowSize[1]/2)
 	stepSize = (subWindowSize[0]/overlapWindows[0], subWindowSize[1]/overlapWindows[1])
@@ -33,8 +33,8 @@ def splitImage(args):
 	maxProb = np.empty((xsize, ysize))
 	maxProb[:,:] = 0
 	tempArray = np.zeros((ysize/stepSize[1]-4,xsize/stepSize[0]-4))
-	print str(ysize/stepSize[1]-4)
-	print str(xsize/stepSize[0]-4)
+	print str(ysize/stepSize[1]-2)
+	print str(xsize/stepSize[0]-2)
 
 	# iterate through subwindows
 	for xcenter in range(halfWindowSize[0], xsize-halfWindowSize[0], stepSize[0]):
