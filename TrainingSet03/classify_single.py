@@ -19,30 +19,6 @@ def draw_text_with_halo(img, position, text, font, col, halo_col):
     ImageDraw.Draw(blurred_halo).text(position, text, font = font, fill = col)
     return Image.composite(img, blurred_halo, ImageChops.invert(blurred_halo))
 
-#Need natural sort to avoid having the list sorted as such:
-#['./folder1.txt', './folder10.txt', './folder2.txt', './folder9.txt']
-def sorted_nicely(strings):
-    "Sort strings the way humans are said to expect."
-    return sorted(strings, key=natural_sort_key)
-
-def natural_sort_key(key):
-    import re
-    return [int(t) if t.isdigit() else t for t in re.split(r'(\d+)', key)]
-
-def newFilename(fname):
-	filename = "results/test_result" + fname + ".png" #default file name
-	#if it does find the last count
-	if(os.path.exists(filename)):
-		result_file = sorted_nicely( glob.glob("results/test_result" + fname + "[0-9]*.png"))
-		if(len(result_file)==0):
-		        filename="results/test_result" + fname + "1.png"
-		else:
-		        last_result = result_file[-1]
-		        number = re.search( "results/test_result" + fname + "([0-9]*).png",last_result).group(1)
-		        filename="results/test_result" + fname + "%i.png"%+(int(number)+1)
-	return filename
-
-
 def parse_arguments():
     parser = argparse.ArgumentParser(description='classify images with a visual bag of words model')
     parser.add_argument('-c', help='path to the codebook file', required=False, default=CODEBOOK_FILE)
@@ -117,14 +93,9 @@ def classifySingle(args):
 	halo_col = (0, 0, 0)   # black
 	i2 = draw_text_with_halo(im, (5, 5), resultText, font, text_col, halo_col)
 	i2.show()
-
-	fname1 = ""
-	fname2 = "_mci"
-
-	filename1 = newFilename(fname1)
-	filename2 = newFilename(fname2)
-
-	i2.save(filename1)
+	
+	for infile in sys.argv[5:]:
+		fname1 = os.path.splitext(infile)[0] + "_mci"
 
 	pixels = i2.load() # create the pixel map
 
@@ -133,4 +104,4 @@ def classifySingle(args):
 		pixels[i,j] = (mID, mID, mID, 255) # set the colour accordingly
 
 	i2.show()
-	i2.save(filename2)
+	i2.save(fname1, "png")

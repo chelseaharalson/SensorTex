@@ -5,7 +5,6 @@ import glob
 import numpy as np
 from scipy.stats import mode
 from classify_subwindows import classify
-from classify_single import newFilename
 
 mci = []
 maxProb = []
@@ -104,7 +103,10 @@ def generateMCI(mciMap):
 		#print(mciMap[i,j])
 		pixels[i,j] = (int(mciMap[i,j]), int(mciMap[i,j]), int(mciMap[i,j]), 255) # set the color accordingly
 	newImage.show()
-	fname = "_mosaic_mci"
-	filename = newFilename(fname)
-	newImage.save(filename)
+
+	for infile in sys.argv[5:]:
+		fname1 = os.path.splitext(infile)[0] + "_mci"
+
+	newImage.save(fname1, "png")
+
 	return pixels
