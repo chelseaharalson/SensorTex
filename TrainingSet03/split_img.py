@@ -68,7 +68,7 @@ def splitImage(args):
 		for y in range(1, ysize):
 			for i in range(1, overlapWindows[0]):
 				for j in range(1, overlapWindows[1]):
-					maximalVote = mciPixels[i][j][x][y]
+					maximalVote = mciPixels[i,j,x,y]
 					if(maximalVote == -1):		# not classified
 						continue
 					total = total + 1
@@ -82,8 +82,8 @@ def splitImage(args):
 					maxID = k
 					maximalVote = hist[k]
 
-			mci[x][y] = maxID * 40
-			maxProb[x][y] = maximalVote/total
+			mci[x,y] = maxID * 40
+			maxProb[x,y] = maximalVote/total
 	im = Image.open(sys.argv[5])
 	im.show()
 	print "TEMP ARRAY: "
@@ -96,12 +96,15 @@ def subImage(box, im):
 	return region
 
 def generateMCI(mciMap):
-	newImage = Image.new('RGB', (mciMap.shape), "black")
+	newImage = Image.new('RGBA', (mciMap.shape))
 	pixels = newImage.load() # create the pixel map
-	for i in range(newImage.size[0]):    # for every pixel:
-	    for j in range(newImage.size[1]):
+	for i in range(0, newImage.size[0]):    # for every pixel:
+	    for j in range(0, newImage.size[1]):
 		pixels[i,j] = (int(mciMap[i,j]), int(mciMap[i,j]), int(mciMap[i,j]), 255) # set the color accordingly
+		#print(int(mciMap[i,j]))
 	newImage.show()
+	#pix_val = list(newImage.getdata())
+	#print pix_val
 
 	for infile in sys.argv[5:]:
 		fname1 = os.path.splitext(infile)[0] + "_mci"

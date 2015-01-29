@@ -97,11 +97,11 @@ def classifySingle(args):
 	for infile in sys.argv[5:]:
 		fname1 = os.path.splitext(infile)[0] + "_mci"
 
-	pixels = i2.load() # create the pixel map
+	pixels = im.load() # create the pixel map
 
-	for i in range(i2.size[0]):    # for every pixel:
-	    for j in range(i2.size[1]):
+	for i in range(0, im.size[0]):    # for every pixel:
+	    for j in range(0, im.size[1]):
 		pixels[i,j] = (mID, mID, mID, 255) # set the color accordingly
 
-	i2.show()
-	i2.save(fname1, "png")
+	im.show()
+	im.save(fname1, "png")
