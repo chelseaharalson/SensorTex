@@ -65,6 +65,8 @@ def splitImage(args):
 	print "---------------------"
 	for x in range(1, xsize):
 		for y in range(1, ysize):
+			for z in range(0, len(hist)):
+				hist[z] = 0
 			for i in range(1, overlapWindows[0]):
 				for j in range(1, overlapWindows[1]):
 					materialVote = mciPixels[i,j,x,y]

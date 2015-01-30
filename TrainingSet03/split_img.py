@@ -65,6 +65,8 @@ def splitImage(args):
 	print "---------------------"
 	for x in range(1, xsize):
 		for y in range(1, ysize):
+			for z in range(0, len(hist)):
+				hist[z] = 0
 			for i in range(1, overlapWindows[0]):
 				for j in range(1, overlapWindows[1]):
 					materialVote = mciPixels[i,j,x,y]
@@ -72,16 +74,6 @@ def splitImage(args):
 						continue
 					total = total + 1
 					hist[materialVote/40] = hist[materialVote/40] + 1
-
-			if(x == 40 and y == 40):
-				print "x and y = 40: "
-				print hist[materialVote/40]
-			if(x == 80 and y == 80):
-				print "x and y = 80: "
-				print hist[materialVote/40]
-			if(x == 120 and y == 120):
-				print "x and y = 120: "
-				print hist[materialVote/40]
 
 			maxID = 0
 			materialVote = hist[0]
