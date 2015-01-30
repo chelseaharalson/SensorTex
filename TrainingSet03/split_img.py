@@ -73,6 +73,16 @@ def splitImage(args):
 					total = total + 1
 					hist[materialVote/40] = hist[materialVote/40] + 1
 
+			if(x == 40 and y == 40):
+				print "x and y = 40: "
+				print hist[materialVote/40]
+			if(x == 80 and y == 80):
+				print "x and y = 80: "
+				print hist[materialVote/40]
+			if(x == 120 and y == 120):
+				print "x and y = 120: "
+				print hist[materialVote/40]
+
 			maxID = 0
 			materialVote = hist[0]
 
