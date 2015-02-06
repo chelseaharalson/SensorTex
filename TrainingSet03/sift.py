@@ -133,7 +133,7 @@ def read_features_from_file(filename='temp.sift', dense=False):
     return locs, descriptors
 
 
-# process the subwindow image
+
 def process_img(subwindow, resultname='temp.sift', dense=False):
 	""" process an image and save the results in a .key ascii file"""
     #print "working on ", imagename
