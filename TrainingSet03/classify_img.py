@@ -8,8 +8,9 @@ import ImageChops, ImageDraw, ImageFont, ImageFilter
 import os
 import glob
 import re
+import sys
 
-from split_img import splitImage
+from split_img64 import splitImage
 from classify_single import classifySingle
 
 HISTOGRAMS_FILE = 'testdata.svm'
@@ -24,11 +25,32 @@ def parse_arguments():
     args = parser.parse_args()
     return args
 
+#print  sys.argv[5]
 
-answer = raw_input("Is this image a mosaic? Please type 'y' or 'n' and then press enter. ")
-if answer == 'y':
-	splitImage(parse_arguments())	#mosaic
-elif answer == 'n':
-	classifySingle(parse_arguments())	#single image
+if  os.path.exists(sys.argv[5]):
+	if  os.path.isdir(sys.argv[5]):
+		directory = sys.argv[5]
+		files = os.listdir(directory)
+		answer = raw_input("Are the " + str(len(files)) + " images located in " + directory
++ " considered to be mosaics? Please type 'y' or 'n' and then press enter. ")
+		if answer == 'y':
+			for i in files:
+				sys.argv[5] = os.path.join(directory, i)
+				splitImage(parse_arguments())	#mosaic
+		elif answer == 'n':
+			for i in files:
+				sys.argv[5] = os.path.join(directory, i)
+				classifySingle(parse_arguments())	#single image
+		else:
+			print "Please type 'y' or 'n'. "
+	else:
+		answer = raw_input("Is this image a mosaic? Please type 'y' or 'n' and then press enter. ")
+		if answer == 'y':
+			splitImage(parse_arguments())	#mosaic
+		elif answer == 'n':
+			classifySingle(parse_arguments())	#single image
+		else:
+			print "Please type 'y' or 'n'. "
 else:
-	print "Please type 'y' or 'n'. "
+	print  sys.argv[5] + " is not a valid path. The application will now shut down."
+
