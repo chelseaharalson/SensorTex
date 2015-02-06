@@ -77,12 +77,12 @@ def test(test_pathname, model_file):
 	predict_test_file = trunc_filename + ".prediction"
 
 	cmd = '{0} -r "{1}" "{2}" > "{3}"'.format(svmscale_exe, range_file, test_pathname, scaled_test_file)
-	print('Scaling testing data...')
+	#print('Scaling testing data...')
 	Popen(cmd, shell = True, stdout = PIPE).communicate()
 
 	cmd = '{0} "{1}" "{2}" "{3}"'.format(svmpredict_exe, scaled_test_file, model_file, predict_test_file)
-	print('Testing...')
-	print('Output prediction: {0}'.format(predict_test_file))
+	#print('Testing...')
+	#print('Output prediction: {0}'.format(predict_test_file))
 	result = Popen(cmd, shell = True, stdout = PIPE).communicate()
 	pred_class = []
 	with open(predict_test_file,'r') as f:

@@ -40,18 +40,18 @@ def get_imgfiles(path):
     return all_files
 
 
-def extractSift(input_files):
+def extractSift(input_subwindow, fname):
     #print "extracting Sift features"
     all_features_dict = {}
-    for i, fname in enumerate(input_files):
-        features_fname = fname + '.sift'
-        if exists(features_fname) == False:
-            #print "calculating sift features for", fname
-            sift.process_image(fname, features_fname)
-        #print "gathering sift features for", fname,
-        locs, descriptors = sift.read_features_from_file(features_fname)
-        #print descriptors.shape
-        all_features_dict[fname] = descriptors
+    #for i, fname in enumerate(input_subwindow):
+    features_fname = fname + '.sift'
+    if exists(features_fname) == False:
+        #print "calculating sift features for", fname
+        sift.process_img(input_subwindow, features_fname)
+    #print "gathering sift features for", fname,
+    locs, descriptors = sift.read_features_from_file(features_fname)
+    #print descriptors.shape
+    all_features_dict[fname] = descriptors
     return all_features_dict
 
 

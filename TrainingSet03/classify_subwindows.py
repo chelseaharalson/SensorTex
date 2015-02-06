@@ -21,7 +21,7 @@ def parse_arguments():
     args = parser.parse_args()
     return args
 
-def classify(imgfname, args):
+def classify(subwindow, subwindowfname, args):
 	#print "---------------------"
 	#print "## extract Sift features"
 	all_files = []
@@ -32,8 +32,8 @@ def classify(imgfname, args):
 	model_file = args.m
 	codebook_file = args.c
 	fnames = args.input_images
-	fnames[0] = imgfname
-	all_features = extractSift(fnames)
+	#fnames[0] = imgfname
+	all_features = extractSift(subwindow, subwindowfname)
 	for i in fnames:
 	    all_files_labels[i] = 0  # label is unknown
 
@@ -45,9 +45,9 @@ def classify(imgfname, args):
 	#print "---------------------"
 	#print "## computing visual word histograms"
 	all_word_histgrams = {}
-	for imagefname in all_features:
-	    word_histgram = computeHistograms(codebook, all_features[imagefname])
-	    all_word_histgrams[imagefname] = word_histgram
+	for subwindow in all_features:
+	    word_histgram = computeHistograms(codebook, all_features[subwindow])
+	    all_word_histgrams[subwindow] = word_histgram
 
 	#print "---------------------"
 	#print "## write the histograms to file to pass it to the svm"

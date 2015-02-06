@@ -52,7 +52,7 @@ def splitImage(args):
 			subwindow.save(subwindowfname)
 			#print "Subwindow file name: " + subwindowfname
 			#print "---------------------"
-			tempMID = classify(subwindowfname, args)
+			tempMID = classify(subwindow, subwindowfname, args)
 			#print str(tempMID)
 			x = xcenter/stepSize[0]
 			y = ycenter/stepSize[1]
