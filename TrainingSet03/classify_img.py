@@ -9,6 +9,7 @@ import os
 import glob
 import re
 import sys
+import time
 
 from split_img import splitImage
 from classify_single import classifySingle
@@ -26,6 +27,7 @@ def parse_arguments():
     return args
 
 #print  sys.argv[5]
+startTime = time.time()
 
 if  os.path.exists(sys.argv[5]):
 	if  os.path.isdir(sys.argv[5]):
@@ -53,4 +55,7 @@ if  os.path.exists(sys.argv[5]):
 			print "Please type 'y' or 'n'. "
 else:
 	print  sys.argv[5] + " is not a valid path. The application will now shut down."
+
+elapsedTime = time.time() - startTime
+print "Total run time " + str(elapsedTime) + " sec"
 
