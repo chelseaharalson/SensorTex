@@ -92,9 +92,11 @@ def splitImage(args):
 					materialVote = hist[k]
 
 			mci[x,y] = maxID * 40
+			'''
 			if (x == 24 and y == 8):
 				mci[x,y] = 255
 				print(hist)
+			'''
 			maxProb[x,y] = materialVote/total
 	im = Image.open(sys.argv[5])
 	im.show()
