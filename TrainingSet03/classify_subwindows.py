@@ -21,7 +21,7 @@ def parse_arguments():
     args = parser.parse_args()
     return args
 
-def classify(imgfname, args):
+def classify(imgfname, subwindow, args):
 	#print "---------------------"
 	#print "## extract Sift features"
 	all_files = []
@@ -33,7 +33,7 @@ def classify(imgfname, args):
 	codebook_file = args.c
 	fnames = args.input_images
 	fnames[0] = imgfname
-	all_features = extractSift(fnames)
+	all_features = extractSift(fnames, subwindow)
 	for i in fnames:
 	    all_files_labels[i] = 0  # label is unknown
 

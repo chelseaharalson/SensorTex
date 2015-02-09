@@ -49,10 +49,10 @@ def splitImage(args):
 			subwindow = subImage(box, im)
 			#subwindow.show()
 			subwindowfname = "subwindows/subwindow_" + str(xcenter) + "_" + str(ycenter) + ".png"
-			subwindow.save(subwindowfname)
+			#subwindow.save(subwindowfname)
 			#print "Subwindow file name: " + subwindowfname
 			#print "---------------------"
-			tempMID = classify(subwindowfname, args)
+			tempMID = classify(subwindowfname, subwindow, args)
 			#print str(tempMID)
 			x = xcenter/stepSize[0]
 			y = ycenter/stepSize[1]

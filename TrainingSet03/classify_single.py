@@ -1,7 +1,7 @@
 import libsvm
 import argparse
 from cPickle import load
-from learn import extractSift, computeHistograms, writeHistogramsToFile
+from learn import extractSiftSingle, computeHistograms, writeHistogramsToFile
 import sys
 import Image, ImageChops, ImageDraw, ImageFont, ImageFilter
 import os
@@ -39,7 +39,7 @@ def classifySingle(args):
 	model_file = args.m
 	codebook_file = args.c
 	fnames = args.input_images
-	all_features = extractSift(fnames)
+	all_features = extractSiftSingle(fnames)
 	for i in fnames:
 	    all_files_labels[i] = 0  # label is unknown
 

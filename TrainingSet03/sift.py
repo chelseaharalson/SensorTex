@@ -19,18 +19,87 @@ VERBOSE = True
 WRITE_VERBOSE = False  # no verbose reading atm
 
 
-def process_image(imagename, resultname='temp.sift', dense=False):    
+def process_image(imagename, subwindow, resultname='temp.sift', dense=False):    
     """ process an image and save the results in a .key ascii file"""
     print "working on ", imagename
     if dense == False:
         if imagename[-3:] != 'pgm':
             #create a pgm file, image is resized, if it is too big.
             # sift returns an error if more than 8000 features are found
-            size = (MAXSIZE, MAXSIZE)
-            im = Image.open(imagename).convert('L')
-            im.thumbnail(size, Image.ANTIALIAS)
-            im.save('tmp.pgm')
-            imagename = 'tmp.pgm'
+			size = (MAXSIZE, MAXSIZE)
+			#im = Image.open(imagename).convert('L')
+			im = subwindow.convert('L')
+			im.thumbnail(size, Image.ANTIALIAS)
+			im.save('tmp.pgm')
+			imagename = 'tmp.pgm'
+        
+        #check if linux or windows 
+        if os.name == "posix":
+            cmmd = "./sift < " + imagename + " > " + resultname
+        else:
+            cmmd = "siftWin32 < " + imagename + " > " + resultname
+        
+        # run extraction command
+        returnvalue = subprocess.call(cmmd, shell=True)
+        if returnvalue == 127:
+            os.remove(resultname) # removing empty resultfile created by output redirection
+            raise IOError("SIFT executable not found")
+        if returnvalue == 2:
+            os.remove(resultname) # removing empty resultfile created by output redirection
+            raise IOError("image " + imagename + " not found")            
+        if os.path.getsize(resultname) == 0:
+            raise IOError("extracting SIFT features failed " + resultname)
+
+    else:
+        import vlfeat
+
+        # defines how dense the grid is
+        size = (150, 150)
+        step = 10
+        
+        im = Image.open(imagename).resize(size, Image.ANTIALIAS)
+        im_array = numpy.asarray(im)
+        if im_array.ndim == 3:
+            im_gray = vlfeat.vl_rgb2gray(im_array)
+        elif im_array.ndim == 2:
+            im_gray = im_array
+        else:
+            raise IOError("Not enough dims found in image " + resultname)
+        
+
+        locs, int_descriptors = vlfeat.vl_dsift(im_gray, step=step, verbose=VERBOSE)
+        nfeatures = int_descriptors.shape[1]
+        padding = numpy.zeros((2, nfeatures))
+        locs = numpy.vstack((locs, padding))
+        header = ' '.join([str(nfeatures), str(128)])
+        temp = int_descriptors.astype('float')  # convert descriptors to float
+        descriptors = temp[:]
+        with open(resultname, 'wb') as f:
+            cPickle.dump([locs.T, descriptors.T], f, protocol=cPickle.HIGHEST_PROTOCOL)
+        print "features saved in", resultname
+        if WRITE_VERBOSE:
+            with open(resultname, 'w') as f:
+                f.write(header)
+                f.write("\n")
+                for i in range(nfeatures):
+                    f.write(' '.join(map(str, locs[:, i])))
+                    f.write("\n")
+                    f.write(' '.join(map(str, descriptors[:, i])))
+                    f.write("\n")
+
+
+def process_imageSingle(imagename, resultname='temp.sift', dense=False):    
+    """ process an image and save the results in a .key ascii file"""
+    print "working on ", imagename
+    if dense == False:
+        if imagename[-3:] != 'pgm':
+            #create a pgm file, image is resized, if it is too big.
+            # sift returns an error if more than 8000 features are found
+			size = (MAXSIZE, MAXSIZE)
+			im = Image.open(imagename).convert('L')
+			im.thumbnail(size, Image.ANTIALIAS)
+			im.save('tmp.pgm')
+			imagename = 'tmp.pgm'
         
         #check if linux or windows 
         if os.name == "posix":

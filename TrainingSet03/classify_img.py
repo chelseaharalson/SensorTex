@@ -10,7 +10,7 @@ import glob
 import re
 import sys
 
-from split_img64 import splitImage
+from split_img import splitImage
 from classify_single import classifySingle
 
 HISTOGRAMS_FILE = 'testdata.svm'
