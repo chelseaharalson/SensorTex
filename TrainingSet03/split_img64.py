@@ -34,6 +34,7 @@ def splitImage(args):
 	maxProb = np.empty((xsize, ysize))
 	maxProb[:,:] = 0
 	tempArray = np.zeros((ysize/stepSize[1],xsize/stepSize[0]))
+	tempArray[:,:] = -1
 	print str(ysize/stepSize[1]-2)
 	print str(xsize/stepSize[0]-2)
 
@@ -59,7 +60,10 @@ def splitImage(args):
 			#print "x: " + str(x)
 			#print "y: " + str(y)
 			tempArray[y-2][x-2] = tempMID/40
-			mciPixels[x % overlapWindows[0], y % overlapWindows[1], (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
+			xIndex = (x-2) % overlapWindows[0]
+			yIndex = (y-2) % overlapWindows[1]
+			print "xindex: " + str(xIndex) + "   yindex: " + str(yIndex)
+			mciPixels[xIndex, yIndex, (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
 
 	print "Determining material vote"
 	print "---------------------"
@@ -75,6 +79,10 @@ def splitImage(args):
 					total = total + 1
 					hist[materialVote/40] = hist[materialVote/40] + 1
 
+					if (x == 24 and y == 8):
+						print(hist)
+						print "i: " + str(i) + "   j: " + str(j) + "  material vote: " + str(materialVote)
+					
 			maxID = 0
 			materialVote = hist[0]
 
@@ -84,6 +92,9 @@ def splitImage(args):
 					materialVote = hist[k]
 
 			mci[x,y] = maxID * 40
+			if (x == 24 and y == 8):
+				mci[x,y] = 255
+				print(hist)
 			maxProb[x,y] = materialVote/total
 	im = Image.open(sys.argv[5])
 	im.show()

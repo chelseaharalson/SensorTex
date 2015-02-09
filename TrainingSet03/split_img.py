@@ -34,6 +34,7 @@ def splitImage(args):
 	maxProb = np.empty((xsize, ysize))
 	maxProb[:,:] = 0
 	tempArray = np.zeros((ysize/stepSize[1]-4,xsize/stepSize[0]-4))
+	tempArray[:,:] = -1
 	print str(ysize/stepSize[1]-4)
 	print str(xsize/stepSize[0]-4)
 
@@ -58,8 +59,10 @@ def splitImage(args):
 			y = ycenter/stepSize[1]
 			#print "x: " + str(x)
 			#print "y: " + str(y)
+			xIndex = (x-2) % overlapWindows[0]
+			yIndex = (y-2) % overlapWindows[1]
 			tempArray[y-2][x-2] = tempMID/40
-			mciPixels[x % overlapWindows[0], y % overlapWindows[1], (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
+			mciPixels[xIndex, yIndex, (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
 
 	print "Determining material vote"
 	print "---------------------"
