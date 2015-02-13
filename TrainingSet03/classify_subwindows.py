@@ -21,6 +21,8 @@ def parse_arguments():
     args = parser.parse_args()
     return args
 
+# Uncomment @profile if want to do a profile by adding in: -m memory_profiler
+#@profile
 def classify(imgfname, subwindow, args):
 	#print "---------------------"
 	#print "## extract Sift features"

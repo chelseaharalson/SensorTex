@@ -13,6 +13,13 @@
     python classify_img.py -c Training03codebook.file -m Training03trainingdata.svm.model MoreTest/mosaic_test.png
 	python classify_img.py -c Training03codebook.file -m Training03trainingdata.svm.model AllTestTraining
 
+### Example for using memory profiler:
+	pip install -U memory_profiler
+	pip install psutil
+	Uncomment out @profile in the code and run:
+	python -m memory_profiler classify_img.py -c Training03codebook.file -m Training03trainingdata.svm.model MoreTest/test003.bmp 
+
+
 
 ### Prerequisites:
 
