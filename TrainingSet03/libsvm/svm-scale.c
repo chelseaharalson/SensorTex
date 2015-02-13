@@ -150,8 +150,8 @@ int main(int argc,char **argv)
 	}
 
 	if(min_index < 1)
-		fprintf(stderr,
-			"WARNING: minimal feature index is %d, but indices should start from 1\n", min_index);
+		//fprintf(stderr,
+		//	"WARNING: minimal feature index is %d, but indices should start from 1\n", min_index);
 
 	rewind(fp);
 

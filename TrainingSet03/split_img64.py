@@ -63,7 +63,7 @@ def splitImage(args):
 			tempArray[y][x] = tempMID/40
 			xIndex = (x) % overlapWindows[0]
 			yIndex = (y) % overlapWindows[1]
-			print "xindex: " + str(xIndex) + "   yindex: " + str(yIndex)
+			#print "xindex: " + str(xIndex) + "   yindex: " + str(yIndex)
 			mciPixels[xIndex, yIndex, (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
 
 	print "Determining material vote"
@@ -80,11 +80,12 @@ def splitImage(args):
 						continue
 					total = total + 1
 					hist[materialVote/40] = hist[materialVote/40] + 1
-
+					'''
 					if (x == 24 and y == 8):
 						print "Histogram for " +str(x)+ ", "+str(y)
 						print(hist)
 						print "i: " + str(i) + "   j: " + str(j) + "  material vote: " + str(materialVote)
+					'''
 					
 			maxID = 0
 			materialVote = hist[0]

@@ -21,7 +21,7 @@ WRITE_VERBOSE = False  # no verbose reading atm
 
 def process_image(imagename, subwindow, resultname='temp.sift', dense=False):    
     """ process an image and save the results in a .key ascii file"""
-    print "working on ", imagename
+    #print "working on ", imagename
     if dense == False:
         if imagename[-3:] != 'pgm':
             #create a pgm file, image is resized, if it is too big.
@@ -90,7 +90,7 @@ def process_image(imagename, subwindow, resultname='temp.sift', dense=False):
 
 def process_imageSingle(imagename, resultname='temp.sift', dense=False):    
     """ process an image and save the results in a .key ascii file"""
-    print "working on ", imagename
+    #print "working on ", imagename
     if dense == False:
         if imagename[-3:] != 'pgm':
             #create a pgm file, image is resized, if it is too big.
