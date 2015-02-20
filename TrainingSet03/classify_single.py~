@@ -105,4 +105,4 @@ def classifySingle(args):
 		pixels[i,j] = (mID, mID, mID, 255) # set the color accordingly
 
 	im.show()
-	im.save(fname1, "png")
+	im.save(fname1, "tif")
