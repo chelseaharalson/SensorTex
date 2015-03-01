@@ -106,7 +106,7 @@ def writeHistogramsToFile(nwords, labels, fnames, all_word_histgrams, features_f
         data_rows = vstack((data_rows, data_row))
     data_rows = data_rows[1:]
     fmt = '%i '
-    for i in range(nwords):
+    for i in range(1,nwords+1):#for i in range(nwords):
         fmt = fmt + str(i) + ':%f '
     savetxt(features_fname, data_rows, fmt)
 

@@ -65,10 +65,7 @@ def classify(imgfname, subwindow, args):
 	#print libsvm.test(HISTOGRAMS_FILE, model_file)
 
 	result = str(libsvm.test(HISTOGRAMS_FILE, model_file))
-	if result == "[0]":
-		mID = 0
-		resultText = "Not recognized"
-		#print("Not recognized")
+	mID = -1
 	if result == "[1]":
 		mID = 40
 		resultText = "Brick"
@@ -81,4 +78,8 @@ def classify(imgfname, subwindow, args):
 		mID = 120
 		resultText = "Wood"
 		#print("Wood")
+	else:				#if result == "[0]":
+		mID = 0
+		resultText = "Not recognized"
+		#print("Not recognized")
 	return mID

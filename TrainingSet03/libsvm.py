@@ -59,9 +59,9 @@ def test(test_pathname, model_file):
 		gnuplot_exe = "/usr/bin/gnuplot"
 	else:
 	        # example for windows
-		svmscale_exe = r"..\windows\svm-scale.exe"
-		svmtrain_exe = r"..\windows\svm-train.exe"
-		svmpredict_exe = r"..\windows\svm-predict.exe"
+		svmscale_exe = r"libsvm\windows\svm-scale.exe"
+		svmtrain_exe = r"libsvm\windows\svm-train.exe"
+		svmpredict_exe = r"libsvm\windows\svm-predict.exe"
 		gnuplot_exe = r"c:\tmp\gnuplot\binary\pgnuplot.exe"
 		grid_py = r".\grid.py"
 
@@ -96,7 +96,10 @@ def test(test_pathname, model_file):
 	result = result[pivot+3:]
 	pivot = result.find('%')
 	result = result[:pivot]
-	accuracy = float(result)
+	# in lieu of windows err
+	if os.name == "posix":
+		accuracy = float(result)
+	#else do nothing if Windows
 	return pred_class
 
 
@@ -110,9 +113,9 @@ def grid(train_pathname,test_pathname=None, png_filename=None):
 		gnuplot_exe = "/usr/bin/gnuplot"
 	else:
 	        # example for windows
-		svmscale_exe = r"..\windows\svm-scale.exe"
-		svmtrain_exe = r"..\windows\svm-train.exe"
-		svmpredict_exe = r"..\windows\svm-predict.exe"
+		svmscale_exe = r"libsvm\windows\svm-scale.exe"
+		svmtrain_exe = r"libsvm\windows\svm-train.exe"
+		svmpredict_exe = r"libsvm\windows\svm-predict.exe"
 		gnuplot_exe = r"c:\tmp\gnuplot\binary\pgnuplot.exe"
 		grid_py = r".\grid.py"
 

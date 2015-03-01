@@ -58,7 +58,7 @@ def process_image(imagename, subwindow, resultname='temp.sift', dense=False):
         step = 10
         
         im = Image.open(imagename).resize(size, Image.ANTIALIAS)
-        im_array = numpy.asarray(im)
+        im_array = numpy.asarray(im) #Array interpretation of a
         if im_array.ndim == 3:
             im_gray = vlfeat.vl_rgb2gray(im_array)
         elif im_array.ndim == 2:
@@ -138,7 +138,7 @@ def process_imageSingle(imagename, resultname='temp.sift', dense=False):
         locs, int_descriptors = vlfeat.vl_dsift(im_gray, step=step, verbose=VERBOSE)
         nfeatures = int_descriptors.shape[1]
         padding = numpy.zeros((2, nfeatures))
-        locs = numpy.vstack((locs, padding))
+        locs = numpy.vstack((locs, padding)) #array formed by stacking the given arrays
         header = ' '.join([str(nfeatures), str(128)])
         temp = int_descriptors.astype('float')  # convert descriptors to float
         descriptors = temp[:]

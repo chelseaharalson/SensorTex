@@ -55,7 +55,7 @@ if  os.path.exists(sys.argv[5]):
 			classifySingle(parse_arguments())	#single image
 		else:
 			print "Please type 'y' or 'n'. "
-		os.remove(sys.argv[5] + ".sift")
+		#os.remove(sys.argv[5] + ".sift")
 else:
 	print  sys.argv[5] + " is not a valid path. The application will now shut down."
 
