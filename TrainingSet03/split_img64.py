@@ -5,13 +5,14 @@ import glob
 import numpy as np
 from scipy.stats import mode
 from classify_subwindows import classify
+from progressbar import ProgressBar, Percentage, Bar, RotatingMarker, ETA, FileTransferSpeed
 
 mci = []
 maxProb = []
 
 def splitImage(args):
 	print "---------------------"
-	print "Spliting up the image..."
+	#print "Spliting up the image..."
 
 	# get test image
 	im = Image.open(args.input_images[0])
@@ -44,9 +45,17 @@ def splitImage(args):
 	for f in files:
 		os.remove(f)
 
+	# Windowing Progress Bar
+	limit = len(range(halfWindowSize[0], xsize-halfWindowSize[0], stepSize[0])) * len(range(halfWindowSize[1], ysize-halfWindowSize[1], stepSize[1])) * 10
+	window_widgets = ['Windowing: ', Percentage(), ' ', Bar(marker=RotatingMarker()), ' ', ETA(), ' ', FileTransferSpeed()]
+	window_pbar = ProgressBar(widgets=window_widgets, maxval=limit).start()
+	i = 0
+
 	# iterate through subwindows
 	for xcenter in range(halfWindowSize[0], xsize-halfWindowSize[0], stepSize[0]):
-		for ycenter in range(halfWindowSize[1], ysize-halfWindowSize[1], stepSize[1]):				
+		for ycenter in range(halfWindowSize[1], ysize-halfWindowSize[1], stepSize[1]):
+			window_pbar.update(10*i+1)				
+			i = i + 1
 			box = (xcenter-halfWindowSize[0], ycenter-halfWindowSize[1], xcenter+halfWindowSize[0], ycenter+halfWindowSize[1])
 			subwindow = subImage(box, im)
 			#subwindow.show()
@@ -66,10 +75,16 @@ def splitImage(args):
 			#print "xindex: " + str(xIndex) + "   yindex: " + str(yIndex)
 			mciPixels[xIndex, yIndex, (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
 
-	print "Determining material vote"
-	print "---------------------"
+	window_pbar.finish()
+
+	# Material Vote Progress Bar
+	limit = xsize * ysize
+	mvote_widgets = ['Material Vote: ', Percentage(), ' ', Bar(marker=RotatingMarker()), ' ', ETA(), ' ', FileTransferSpeed()]
+	mvote_pbar = ProgressBar(widgets=mvote_widgets, maxval=limit).start()
+
 	for x in range(0, xsize):
 		for y in range(0, ysize):
+			mvote_pbar.update(x*ysize + y)				
 			for z in range(0, len(hist)):
 				hist[z] = 0
 			# Tally material IDs
@@ -103,6 +118,8 @@ def splitImage(args):
 			'''
 			maxProb[x,y] = materialVote/total
 			#print "MaxProb at " +str(x)+ ", "+str(y) + " for " + str(mci[x,y]) +" : " + str(maxProb[x,y])
+
+	mvote_pbar.finish()
 	im = Image.open(sys.argv[5])
 	im.show()
 	print "TEMP ARRAY: "
@@ -127,6 +144,6 @@ def generateMCI(mciMap):
 	for infile in sys.argv[5:]:
 		fname1 = os.path.splitext(infile)[0] + "_mci"
 
-	newImage.save(fname1, "png")
+	newImage.save(fname1, "tiff")
 
 	return pixels

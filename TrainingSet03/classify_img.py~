@@ -39,10 +39,12 @@ if  os.path.exists(sys.argv[5]):
 			for i in files:
 				sys.argv[5] = os.path.join(directory, i)
 				splitImage(parse_arguments())	#mosaic
+				os.remove(sys.argv[5] + ".sift")
 		elif answer == 'n':
 			for i in files:
 				sys.argv[5] = os.path.join(directory, i)
 				classifySingle(parse_arguments())	#single image
+				os.remove(sys.argv[5] + ".sift")
 		else:
 			print "Please type 'y' or 'n'. "
 	else:
@@ -53,6 +55,7 @@ if  os.path.exists(sys.argv[5]):
 			classifySingle(parse_arguments())	#single image
 		else:
 			print "Please type 'y' or 'n'. "
+		os.remove(sys.argv[5] + ".sift")
 else:
 	print  sys.argv[5] + " is not a valid path. The application will now shut down."
 
