@@ -18,7 +18,7 @@ def splitImage(args):
 	xsize, ysize = im.size
 	
 	subWindowSize = 64, 64
-	overlapWindows = 16, 16
+	overlapWindows = 4, 4
 	halfWindowSize = (subWindowSize[0]/2, subWindowSize[1]/2)
 	stepSize = (subWindowSize[0]/overlapWindows[0], subWindowSize[1]/overlapWindows[1])
 	xcover = xsize-halfWindowSize[0]
@@ -29,15 +29,14 @@ def splitImage(args):
 	hist = np.zeros(4)
 	total = 0
 	maxMaterials = 4
-	mci = np.zeros((xsize, ysize))	#mci = np.empty((xsize, ysize))
-	#mci[:,:] = 0
-	maxProb = np.empty((xsize, ysize))	#maxProb = np.empty((xsize, ysize))
-	#maxProb[:,:] = 0
+	mci = np.empty((xsize, ysize))
+	mci[:,:] = 0
+	maxProb = np.empty((xsize, ysize))
+	maxProb[:,:] = 0
 	tempArray = np.zeros((ysize/stepSize[1],xsize/stepSize[0]))
 	tempArray[:,:] = -1
-	print "xsize/stepSize: " + str(xsize/stepSize[0])
-	print "ysize/stepSize: " + str(ysize/stepSize[1])
-
+	print str(ysize/stepSize[1]-2)
+	print str(xsize/stepSize[0]-2)
 
 	# clear out subwindows folder
 	files = glob.glob('subwindows/*')
@@ -56,23 +55,22 @@ def splitImage(args):
 			#print "---------------------"
 			tempMID = classify(subwindowfname, subwindow, args)
 			#print str(tempMID)
-			x = xcenter/stepSize[0]-2
-			y = ycenter/stepSize[1]-2
+			x = xcenter/stepSize[0]
+			y = ycenter/stepSize[1]
 			#print "x: " + str(x)
 			#print "y: " + str(y)
-			tempArray[y][x] = tempMID/40
-			xIndex = (x) % overlapWindows[0]
-			yIndex = (y) % overlapWindows[1]
-			print "xindex: " + str(xIndex) + "   yindex: " + str(yIndex)
+			tempArray[y-2][x-2] = tempMID/40
+			xIndex = (x-2) % overlapWindows[0]
+			yIndex = (y-2) % overlapWindows[1]
+			#print "xindex: " + str(xIndex) + "   yindex: " + str(yIndex)
 			mciPixels[xIndex, yIndex, (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
 
 	print "Determining material vote"
 	print "---------------------"
-	for x in range(0, xsize):
-		for y in range(0, ysize):
+	for x in range(1, xsize):
+		for y in range(1, ysize):
 			for z in range(0, len(hist)):
 				hist[z] = 0
-			# Tally material IDs
 			for i in range(1, overlapWindows[0]):
 				for j in range(1, overlapWindows[1]):
 					materialVote = mciPixels[i,j,x,y]
@@ -80,12 +78,10 @@ def splitImage(args):
 						continue
 					total = total + 1
 					hist[materialVote/40] = hist[materialVote/40] + 1
-					'''
+
 					if (x == 24 and y == 8):
-						print "Histogram for " +str(x)+ ", "+str(y)
 						print(hist)
 						print "i: " + str(i) + "   j: " + str(j) + "  material vote: " + str(materialVote)
-					'''
 					
 			maxID = 0
 			materialVote = hist[0]
@@ -102,7 +98,6 @@ def splitImage(args):
 				print(hist)
 			'''
 			maxProb[x,y] = materialVote/total
-			#print "MaxProb at " +str(x)+ ", "+str(y) + " for " + str(mci[x,y]) +" : " + str(maxProb[x,y])
 	im = Image.open(sys.argv[5])
 	im.show()
 	print "TEMP ARRAY: "

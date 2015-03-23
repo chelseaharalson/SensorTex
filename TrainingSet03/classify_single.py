@@ -93,7 +93,7 @@ def classifySingle(args):
 	text_col = (0, 255, 0) # bright green
 	halo_col = (0, 0, 0)   # black
 	i2 = draw_text_with_halo(im, (5, 5), resultText, font, text_col, halo_col)
-	i2.show()
+	#i2.show()
 	
 	for infile in sys.argv[5:]:
 		fname1 = os.path.splitext(infile)[0] + "_mci"
@@ -104,5 +104,5 @@ def classifySingle(args):
 	    for j in range(0, im.size[1]):
 		pixels[i,j] = (mID, mID, mID, 255) # set the color accordingly
 
-	im.show()
+	#im.show()
 	im.save(fname1, "tiff")
