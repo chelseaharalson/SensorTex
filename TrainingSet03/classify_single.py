@@ -106,3 +106,4 @@ def classifySingle(args):
 
 	im.show()
 	im.save(fname1, "tiff")
+	return sys.argv[5] + '   Classification: ' + resultText

@@ -65,10 +65,9 @@ def classifySingle(args):
 		              all_word_histgrams,
 		              HISTOGRAMS_FILE)
 
-	print "---------------------"
-	print "## test data with svm"
-	sys.stdout.flush()
-	print libsvm.test(HISTOGRAMS_FILE, model_file)
+	#print "---------------------"
+	#print "## test data with svm"
+	#print libsvm.test(HISTOGRAMS_FILE, model_file)
 
 	result = str(libsvm.test(HISTOGRAMS_FILE, model_file))
 	if result == "[0]":
@@ -107,3 +106,4 @@ def classifySingle(args):
 
 	im.show()
 	im.save(fname1, "tiff")
+	return sys.argv[5] + 'Classification: ' + resultText

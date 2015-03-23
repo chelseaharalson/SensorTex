@@ -35,12 +35,14 @@ def process_image(imagename, subwindow, resultname='temp.sift', dense=False):
         
         #check if linux or windows 
         if os.name == "posix":
-            cmmd = "./sift < " + imagename + " > " + resultname
+            cmmd = "./sift > " + imagename + " > " + resultname
         else:
             cmmd = "siftWin32 < " + imagename + " > " + resultname
         
         # run extraction command
-        returnvalue = subprocess.call(cmmd, shell=True)
+	fh = open("NUL","w")
+        returnvalue = subprocess.call(cmmd, stdout = fh, shell=True)
+	fh.close()
         if returnvalue == 127:
             os.remove(resultname) # removing empty resultfile created by output redirection
             raise IOError("SIFT executable not found")
@@ -90,6 +92,7 @@ def process_image(imagename, subwindow, resultname='temp.sift', dense=False):
 
 def process_imageSingle(imagename, resultname='temp.sift', dense=False):    
     """ process an image and save the results in a .key ascii file"""
+    #print "working on ", imagename
     if dense == False:
         if imagename[-3:] != 'pgm':
             #create a pgm file, image is resized, if it is too big.

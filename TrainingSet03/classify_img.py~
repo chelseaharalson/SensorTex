@@ -10,6 +10,7 @@ import glob
 import re
 import sys
 import time
+import itertools
 
 from split_img64 import splitImage
 from classify_single import classifySingle
@@ -28,6 +29,7 @@ def parse_arguments():
 
 #print  sys.argv[5]
 startTime = time.time()
+outfile = open('output', 'w')
 
 if  os.path.exists(sys.argv[5]):
 	if  os.path.isdir(sys.argv[5]):
@@ -37,28 +39,33 @@ if  os.path.exists(sys.argv[5]):
 + " considered to be mosaics? Please type 'y' or 'n' and then press enter. ")
 		if answer == 'y':
 			for i in files:
+				outfile.write('Image ' + str(i+1) + ': ')
 				sys.argv[5] = os.path.join(directory, i)
-				splitImage(parse_arguments())	#mosaic
-				os.remove(sys.argv[5] + ".sift")
+				outfile.write(splitImage(parse_arguments()))	#mosaic
+				outfile.write('\n')
 		elif answer == 'n':
 			for i in files:
+				outfile.write('Image ' + str(i+1) + ': ')
 				sys.argv[5] = os.path.join(directory, i)
-				classifySingle(parse_arguments())	#single image
+				outfile.write(classifySingle(parse_arguments()))	#single image
 				os.remove(sys.argv[5] + ".sift")
+				outfile.write('\n')
 		else:
 			print "Please type 'y' or 'n'. "
 	else:
 		answer = raw_input("Is this image a mosaic? Please type 'y' or 'n' and then press enter. ")
 		if answer == 'y':
-			splitImage(parse_arguments())	#mosaic
+			outfile.write('Image: ')
+			outfile.write(splitImage(parse_arguments()))	#mosaic
 		elif answer == 'n':
-			classifySingle(parse_arguments())	#single image
+			outfile.write('Image: ')
+			outfile.write(classifySingle(parse_arguments()))	#single image
+			os.remove(sys.argv[5] + ".sift")
 		else:
 			print "Please type 'y' or 'n'. "
-		os.remove(sys.argv[5] + ".sift")
 else:
 	print  sys.argv[5] + " is not a valid path. The application will now shut down."
-
 elapsedTime = time.time() - startTime
 print "Total run time " + str(elapsedTime) + " sec"
+outfile.close()
 

@@ -36,6 +36,7 @@ def classify(imgfname, subwindow, args):
 	fnames = args.input_images
 	fnames[0] = imgfname
 	all_features = extractSift(fnames, subwindow)
+	fsdfsd
 	for i in fnames:
 	    all_files_labels[i] = 0  # label is unknown
 

@@ -13,6 +13,8 @@ maxProb = []
 def splitImage(args):
 	print "---------------------"
 	#print "Spliting up the image..."
+	CURSOR_UP_ONE = '\x1b[1A'
+	ERASE_LINE = '\x1b[2K'
 
 	# get test image
 	im = Image.open(args.input_images[0])
@@ -36,8 +38,6 @@ def splitImage(args):
 	#maxProb[:,:] = 0
 	tempArray = np.zeros((ysize/stepSize[1],xsize/stepSize[0]))
 	tempArray[:,:] = -1
-	print "xsize/stepSize: " + str(xsize/stepSize[0])
-	print "ysize/stepSize: " + str(ysize/stepSize[1])
 
 
 	# clear out subwindows folder
@@ -53,9 +53,7 @@ def splitImage(args):
 
 	# iterate through subwindows
 	for xcenter in range(halfWindowSize[0], xsize-halfWindowSize[0], stepSize[0]):
-		for ycenter in range(halfWindowSize[1], ysize-halfWindowSize[1], stepSize[1]):
-			window_pbar.update(10*i+1)				
-			i = i + 1
+		for ycenter in range(halfWindowSize[1], ysize-halfWindowSize[1], stepSize[1]):				
 			box = (xcenter-halfWindowSize[0], ycenter-halfWindowSize[1], xcenter+halfWindowSize[0], ycenter+halfWindowSize[1])
 			subwindow = subImage(box, im)
 			#subwindow.show()
@@ -63,6 +61,7 @@ def splitImage(args):
 			#subwindow.save(subwindowfname)
 			#print "Subwindow file name: " + subwindowfname
 			#print "---------------------"
+			#sys.stdout = open(os.devnull, "w")
 			tempMID = classify(subwindowfname, subwindow, args)
 			#print str(tempMID)
 			x = xcenter/stepSize[0]-2
@@ -74,6 +73,9 @@ def splitImage(args):
 			yIndex = (y) % overlapWindows[1]
 			#print "xindex: " + str(xIndex) + "   yindex: " + str(yIndex)
 			mciPixels[xIndex, yIndex, (xcenter-halfWindowSize[0]):(xcenter+halfWindowSize[0]), (ycenter-halfWindowSize[1]):(ycenter+halfWindowSize[1])] = tempMID
+			#sys.stdout = sys.__stdout__
+			#window_pbar.update(10*i+1)
+			i = i + 1
 
 	window_pbar.finish()
 
@@ -125,7 +127,18 @@ def splitImage(args):
 	print "TEMP ARRAY: "
 	print(tempArray[1:28,1:18])
 	generateMCI(mci)
-			
+	temp = np.ravel(mci)
+	temp = np.unique(temp)
+	output = ""
+	for i in temp:
+		if i == 40:
+			output = output + 'Brick '
+		if i == 80:
+			output = output + 'Metal '
+		if i == 120:
+			output = output + 'Wood '
+	print sys.argv[5] + '   Classification: ' + output
+	return sys.argv[5] + '   Classification: ' + output		
 
 def subImage(box, im):
 	region = im.crop(box)
