@@ -2,7 +2,7 @@ from os.path import exists, isdir, basename, join, splitext
 import sift
 from glob import glob
 from numpy import zeros, resize, sqrt, histogram, hstack, vstack, savetxt, zeros_like
-import scipy.cluster.vq as vq
+#import scipy.cluster.vq as vq
 import libsvm
 from cPickle import dump, HIGHEST_PROTOCOL
 import argparse
@@ -123,7 +123,7 @@ if __name__ == '__main__':
         raise ValueError('Only ' + str(ncats) + ' categories found. Wrong path?')
     print "found following folders / categories:"
     print cats
-    print "---------------------"    
+    print "---------------------"
     all_files = []
     all_files_labels = {}
     all_features = {}

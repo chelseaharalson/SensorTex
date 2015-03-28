@@ -9,8 +9,8 @@ import glob
 import re
 
 HISTOGRAMS_FILE = 'testdata.svm'
-CODEBOOK_FILE = 'codebook.file'
-MODEL_FILE = 'trainingdata.svm.model'
+CODEBOOK_FILE = 'Training03trainingdata.svm.model'
+MODEL_FILE = 'Training03codebook.file'
 
 def draw_text_with_halo(img, position, text, font, col, halo_col):
     halo = Image.new('RGBA', img.size, (0, 0, 0, 0))
@@ -19,27 +19,19 @@ def draw_text_with_halo(img, position, text, font, col, halo_col):
     ImageDraw.Draw(blurred_halo).text(position, text, font = font, fill = col)
     return Image.composite(img, blurred_halo, ImageChops.invert(blurred_halo))
 
-def parse_arguments():
-    parser = argparse.ArgumentParser(description='classify images with a visual bag of words model')
-    parser.add_argument('-c', help='path to the codebook file', required=False, default=CODEBOOK_FILE)
-    parser.add_argument('-m', help='path to the model  file', required=False, default=MODEL_FILE)
-    parser.add_argument('input_images', help='images to classify', nargs='+')
-    args = parser.parse_args()
-    return args
 
 # Uncomment @profile if want to do a profile by adding in: -m memory_profiler
 #@profile
-def classifySingle(args):
+def classifySingle(filename):
 	#print "---------------------"
 	#print "## extract Sift features"
 	all_files = []
 	all_files_labels = {}
 	all_features = {}
 
-	args = parse_arguments()
-	model_file = args.m
-	codebook_file = args.c
-	fnames = args.input_images
+	model_file = "Training03codebook.file"
+	codebook_file = "Training03trainingdata.svm.model"
+	fnames = {"Test_Training03/test000.png"}
 	all_features = extractSiftSingle(fnames)
 	for i in fnames:
 	    all_files_labels[i] = 0  # label is unknown
@@ -94,7 +86,7 @@ def classifySingle(args):
 	halo_col = (0, 0, 0)   # black
 	i2 = draw_text_with_halo(im, (5, 5), resultText, font, text_col, halo_col)
 	i2.show()
-	
+
 	for infile in sys.argv[5:]:
 		fname1 = os.path.splitext(infile)[0] + "_mci"
 
