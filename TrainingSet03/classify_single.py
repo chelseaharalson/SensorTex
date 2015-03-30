@@ -29,8 +29,8 @@ def classifySingle(filename):
 	all_files_labels = {}
 	all_features = {}
 
-	model_file = "Training03codebook.file"
-	codebook_file = "Training03trainingdata.svm.model"
+	codebook_file = "Training03codebook.file"
+	model_file = "Training03trainingdata.svm.model"
 	fnames = {"Test_Training03/test000.png"}
 	all_features = extractSiftSingle(fnames)
 	for i in fnames:
@@ -79,7 +79,7 @@ def classifySingle(filename):
 		resultText = "Wood"
 		print("Wood")
 
-	im = Image.open(sys.argv[5])
+	im = Image.open(filename)
 	font = ImageFont.truetype("TrebuchetMSBold.ttf", 25)
 
 	text_col = (0, 255, 0) # bright green
