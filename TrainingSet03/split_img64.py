@@ -6,9 +6,16 @@ import numpy as np
 from scipy.stats import mode
 from classify_subwindows import classify
 from progressbar import ProgressBar, Percentage, Bar, RotatingMarker, ETA, FileTransferSpeed
+import threading
 
 mci = []
 maxProb = []
+timer = 5
+
+answer = None
+def windowSize():
+    global answer
+    answer = raw_input("(Ex: For 64 x 64, enter 64.)\n")
 
 def splitImage(args):
 	print "---------------------"
@@ -21,6 +28,22 @@ def splitImage(args):
 	xsize, ysize = im.size
 	
 	subWindowSize = 64, 64
+
+	print "You have 5 seconds to select a sub-window size for " + sys.argv[5] + "."
+	t = threading.Thread(target=windowSize)
+	t.daemon = True
+	t.start()
+	t.join(5)
+	if answer is None:
+		print 
+		print 'Timed out! Sub-window size will be set to 64 x 64.'
+	else:
+		if answer.isdigit():
+			subWindowSize = int(answer), int(answer)
+			print 'Sub-window size will be set to ' + answer + ' x ' + answer + '.'
+		else:
+			print 'Invalid input! Sub-window size will be set to 64 x 64.'
+	
 	overlapWindows = 16, 16
 	halfWindowSize = (subWindowSize[0]/2, subWindowSize[1]/2)
 	stepSize = (subWindowSize[0]/overlapWindows[0], subWindowSize[1]/overlapWindows[1])
