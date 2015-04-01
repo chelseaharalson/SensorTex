@@ -44,7 +44,7 @@ def splitImage(args):
 		else:
 			print 'Invalid input! Sub-window size will be set to 64 x 64.'
 	
-	overlapWindows = 16, 16
+	overlapWindows = 4, 4
 	halfWindowSize = (subWindowSize[0]/2, subWindowSize[1]/2)
 	stepSize = (subWindowSize[0]/overlapWindows[0], subWindowSize[1]/overlapWindows[1])
 	xcover = xsize-halfWindowSize[0]
@@ -120,12 +120,6 @@ def splitImage(args):
 						continue
 					total = total + 1
 					hist[materialVote/40] = hist[materialVote/40] + 1
-					'''
-					if (x == 24 and y == 8):
-						print "Histogram for " +str(x)+ ", "+str(y)
-						print(hist)
-						print "i: " + str(i) + "   j: " + str(j) + "  material vote: " + str(materialVote)
-					'''
 					
 			maxID = 0
 			materialVote = hist[0]
@@ -136,11 +130,7 @@ def splitImage(args):
 					materialVote = hist[k]
 
 			mci[x,y] = maxID * 40
-			'''
-			if (x == 24 and y == 8):
-				mci[x,y] = 255
-				print(hist)
-			'''
+
 			maxProb[x,y] = materialVote/total
 			#print "MaxProb at " +str(x)+ ", "+str(y) + " for " + str(mci[x,y]) +" : " + str(maxProb[x,y])
 
