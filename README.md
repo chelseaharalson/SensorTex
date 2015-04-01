@@ -54,3 +54,6 @@ To install the necessary libraries run following code from working directory:
     
     # Python Imaging Library:
     sudo apt-get install python-imaging imagemagick
+
+	# Progress Bar:
+	sudo pip install progressbar
