@@ -136,7 +136,7 @@ def splitImage(args):
 
 	mvote_pbar.finish()
 	im = Image.open(sys.argv[5])
-	im.show()
+	#im.show()
 	print "TEMP ARRAY: "
 	print(tempArray[1:28,1:18])
 	generateMCI(mci)
@@ -163,7 +163,7 @@ def generateMCI(mciMap):
 	for i in range(0, newImage.size[0]):    # for every pixel:
 	    for j in range(0, newImage.size[1]):
 		pixels[i,j] = (int(mciMap[i,j]), int(mciMap[i,j]), int(mciMap[i,j]), 255) # set the color accordingly
-	newImage.show()
+	#newImage.show()
 	#pix_val = list(newImage.getdata())
 	#print pix_val
 
