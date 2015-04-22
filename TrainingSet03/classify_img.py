@@ -30,6 +30,7 @@ def parse_arguments():
 #print  sys.argv[5]
 outfile = open('output', 'w')
 
+startTime = 0
 if  os.path.exists(sys.argv[5]):
 	if  os.path.isdir(sys.argv[5]):
 		directory = sys.argv[5]
@@ -39,18 +40,25 @@ if  os.path.exists(sys.argv[5]):
 		if answer == 'y':
 			startTime = time.time()
 			for i in files:
-				outfile.write('Image ' + str(i+1) + ': ')
+				#f = str(i+1)
+				outfile.write('Image ' + i + ': ')
 				sys.argv[5] = os.path.join(directory, i)
 				outfile.write(splitImage(parse_arguments()))	#mosaic
 				outfile.write('\n')
 		elif answer == 'n':
 			startTime = time.time()
 			for i in files:
+				'''
+				sys.argv[5] = os.path.join(directory, i)
+				classifySingle(parse_arguments())	#single image
+				os.remove(sys.argv[5] + ".sift")				
+				'''
 				outfile.write('Image ' + str(i+1) + ': ')
 				sys.argv[5] = os.path.join(directory, i)
 				outfile.write(classifySingle(parse_arguments()))	#single image
 				os.remove(sys.argv[5] + ".sift")
 				outfile.write('\n')
+				
 		else:
 			print "Please type 'y' or 'n'. "
 	else:
