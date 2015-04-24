@@ -142,14 +142,33 @@ def splitImage(args):
 	generateMCI(mci)
 	temp = np.ravel(mci)
 	temp = np.unique(temp)
+	f = open('material_IDs.dat', 'r')
+	l = f.readline()
+	num, name = l.split("-")
+	num1 = int(num)
+	name1 = name.rstrip("\n")
+	l = f.readline()
+	num, name = l.split("-")
+	num2 = int(num)
+	name2 = name.rstrip("\n")
+	l = f.readline()
+	num, name = l.split("-")
+	num3 = int(num)
+	name3 = name.rstrip("\n")
+	l = f.readline()
+	num, name = l.split("-")
+	num4 = int(num)
+	name4 = name.rstrip("\n")
 	output = ""
 	for i in temp:
-		if i == 40:
-			output = output + 'Brick '
-		if i == 80:
-			output = output + 'Metal '
-		if i == 120:
-			output = output + 'Wood '
+		if i == num1:
+			output = output + name1 + ' '
+		if i == num2:
+			output = output + name2 + ' '
+		if i == num3:
+			output = output + name3 + ' '
+		if i == num4:
+			output = output + name4 + ' '
 	print sys.argv[5] + '   Classification: ' + output
 	return sys.argv[5] + '   Classification: ' + output		
 

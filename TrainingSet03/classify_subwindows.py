@@ -64,21 +64,14 @@ def classify(imgfname, subwindow, args):
 	#print "## test data with svm"
 	#print libsvm.test(HISTOGRAMS_FILE, model_file)
 
+	f = open('material_IDs.dat', 'r')
 	result = str(libsvm.test(HISTOGRAMS_FILE, model_file))
-	if result == "[0]":
-		mID = 0
-		resultText = "Not recognized"
-		#print("Not recognized")
-	if result == "[1]":
-		mID = 40
-		resultText = "Brick"
-		#print("Brick")
-	if result == "[2]":
-		mID = 80
-		resultText = "Metal"
-		#print("Metal")
-	if result == "[3]":
-		mID = 120
-		resultText = "Wood"
-		#print("Wood")
+	result = result.rstrip("]")
+	result = result.lstrip("[")
+	result = int(result) + 1
+	for x in range(0, result):
+		l = f.readline()
+	num, name = l.split("-")
+	mID = int(num)
+	resultText = name.rstrip("\n")
 	return mID
